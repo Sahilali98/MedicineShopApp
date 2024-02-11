@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Inventory Management
+{% endblock title %}
+
+{% block bodyBlock %}
+
+
+<div class="container my-2">
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-bg-dark rounded-3">
+                <h1>Enter New Stock</h1>
+                <form method="post" id="createForm" name="createForm" action="/inventoryManagement">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Medicine Name</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Dolo 650">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Composition</label>
+                        <input type="text" class="form-control" name="composition" id="composition"
+                            placeholder="pracetramol talates">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput2" class="form-label">Medicine Quantity</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput2" class="form-label">Medicine Price</label>
+                        <input type="number" class="form-control" id="price" name="price" placeholder="30">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput2" class="form-label">Mfg Date</label>
+                        <input type="date" class="form-control form-control-sm small-size" id="mfg_date" name="mfg_date"
+                            value="{{ shift.start_date|date:'Y-m-d' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput2" class="form-label">Exp Date</label>
+                        <input type="date" class="form-control form-control-sm small-size" id="exp_date" name="exp_date"
+                            value="{{ shift.start_date|date:'Y-m-d' }}">
+                    </div>
+                    <button type="submit" id="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                <form method="post" name="updateForm" id="updateForm" action="/updateId">
+                    <h1>Update Stock</h1>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Medicine Name</label>
+                        <select class="form-select" name="med_name" id="med_name" aria-label="Default select example">
+                            <option selected>Open The Menu, Select The Name</option>
+                            {% for data in data%}
+                            <option value="{{data.id}}" id="dataName">{{data.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+
+
+                <form action="/reOrder" method="get">
+                    <h1>Reorder Medicine</h1>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Medicine Name</label>
+                        <select class="form-select" name="reOrderName" id="reOrderName" aria-label="Default select example">
+                            <option selected>Open The Menu, Select The Name</option>
+                            {% for data in data%}
+                            <option value="{{data.id}}" id="reOrderName">{{data.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <label for="formGroupExampleInput" class="form-label">Medicine Composition</label>
+                        <select class="form-select" name="reOrderCompositions" id="reOrderCompositions" aria-label="Default select example">
+                            <option selected>Open The Menu, Select The Name</option>
+                            {% for data in data%}
+                            <option value="{{data.id}}" id="reOrderName">{{data.composition}}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <label for="">Quantity</label>
+                        <br>
+                        <input type="number" name="quantity_re" id="quantity_re" placeholder="1">
+                        <br>
+                        <br>
+                        <label for="">Price</label>
+                        <br>
+                        <input type="number" name="price_re" id="price_re" placeholder="100">
+                        <br>
+                        <br>
+                        <button type="submit" id="reOrder" name="reOrder" class="btn btn-primary">Reorder</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<!-- show in data base below -->
+<div class="container">
+    <div class="row mb-2">
+        {% for data in data %}
+        <div class="col-md-6 my-2">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">Medicine Name - {{data.name}}</strong>
+                    <h3 class="mb-0">Medicine Composition - {{data.composition}}</h3>
+                    <p class="card-text mb-auto">Medicine Quantity - {{data.quantity}}</p>
+                    <p class="card-text mb-auto">Medicine Price - {{data.price}}</p>
+                    <div class="mb-1 text-body-secondary">Medicine Entry Date - {{data.date}}</div>
+                    <div class="mb-1 text-body-secondary">Medicine Mfg Date - {{data.mfg_date}}</div>
+                    <p class="card-text mb-auto">Medicine Expeir Date - {{data.exp_date}}</p>
+                </div>
+            </div>
+            <a href="delete/{{ data.id }}"><button type="submit" class="btn btn-danger" id="delete"
+                    name="delete">Delete</button></a>
+            <a href="update/{{ data.id }}">
+                <button type="submit" id="update" name="update" class="btn btn-primary">Update</button></a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+{% endblock bodyBlock %}

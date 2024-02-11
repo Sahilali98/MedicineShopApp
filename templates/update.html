@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Update Stock{% endblock title %}
+
+{% block bodyBlock %}
+<div class="container">
+    <h1>Update Medicine</h1>
+    <form action="updaterecord/{{ medicine.id }}" method="post">
+        {% csrf_token %}
+        <h2>Medicine Name - {{medicine.name}}</h2>
+        <h2>Medicine compositions - {{medicine.composition}}</h2>
+        Medicine Price:<br>
+        <h6>{{medicine.price}}</h6>
+        <input name="price" value="">
+        <br><br>
+        <h6>{{medicine.quantity}}</h6>
+        Medicine Quantity:<br>
+        <input name="quantity" value="">
+        <br><br>
+        <input type="submit" value="Update">
+    </form>
+</div>
+{% endblock bodyBlock %}
